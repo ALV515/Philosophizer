@@ -8,6 +8,8 @@ Crawls wikipedia until the Philosophy page is reached.
 
 import java.io.*;
 import java.net.*;
+
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Document;
@@ -17,7 +19,7 @@ import org.jsoup.select.Elements;
 
 public class LinkCrawler{
 
-    public static void getNextPage(Document nextPage){
+    public static void getNextPage(Document nextPage) throws IOException{
 
         String title = nextPage.title();
 
@@ -27,11 +29,21 @@ public class LinkCrawler{
         }
 
         System.out.println(title);
-        
+
         Elements links = nextPage.select("a[href]");
 
         for(Element link : links){
+            String linkString = link.toString();
 
+            String[] linkChop = linkString.split(" ");
+
+            String toIsolate = linkChop[1];
+
+            String relativeURL = toIsolate.substring(toIsolate.indexOf("\"") + 1, toIsolate.lastIndexOf("\""));
+
+            String newURL = "https://en.wikipedia.org + relativeURL + ";
+
+            Document newDoc = Jsoup.connect(newURL).get();
         }
     }
 
