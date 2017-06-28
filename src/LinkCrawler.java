@@ -17,6 +17,24 @@ import org.jsoup.select.Elements;
 
 public class LinkCrawler{
 
+    public static void getNextPage(Document nextPage){
+
+        String title = nextPage.title();
+
+        if(title.contains("Philosophy")){
+            System.out.println("Found Philosophy");
+            System.exit(0);
+        }
+
+        System.out.println(title);
+        
+        Elements links = nextPage.select("a[href]");
+
+        for(Element link : links){
+
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         BufferedReader urlGet = new BufferedReader(new InputStreamReader(System.in));
 
@@ -24,11 +42,9 @@ public class LinkCrawler{
 
         Document doc = Jsoup.connect(url).get();
 
-        Elements links = doc.select("a[href]");
+        getNextPage(doc);
 
-        for(Element link : links){
-            System.out.println(link);
-        }
+
     }
 
 }
